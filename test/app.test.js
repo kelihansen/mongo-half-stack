@@ -57,5 +57,13 @@ describe('birds API', () => {
             });
     });
 
+    it('gets a bird by id (GET)', () => {
+        return chai.request(app)
+            .get(`/birds/${crow._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, crow);
+            });
+    });
+
     after(() => mongo.client.close());
 });
