@@ -97,11 +97,19 @@ describe('birds API', () => {
     });
 
 
-    it('returns { removed: false } if id not found', () => {
+    it('returns { removed: false } if id not found (DELETE)', () => {
         return chai.request(app)
             .del(`/birds/${crow._id}`)
             .then(({ body }) => {
                 assert.ok(!body.removed);
+            });
+    });
+    
+    it('returns a 404 if id not found (GET)', () => {
+        return chai.request(app)
+            .get(`/birds/${crow._id}`)
+            .then(({ body }) => {
+                assert.deepEqual(body, { error: true, message: `CANNOT GET /birds/${crow._id}` });
             });
     });
 
