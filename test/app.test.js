@@ -30,6 +30,8 @@ describe('birds API', () => {
         colors: ['black']
     };
 
+    let updatedHummer;
+
     before(() => {
         return chai.request(app)
             .post('/birds')
@@ -62,6 +64,22 @@ describe('birds API', () => {
             .get(`/birds/${crow._id}`)
             .then(({ body }) => {
                 assert.deepEqual(body, crow);
+            });
+    });
+
+    it('updates a bird (PUT)', () => {
+        updatedHummer = Object.assign({}, hummingbird);
+        updatedHummer.colors = ['green', 'gray', 'magenta'];
+        return chai.request(app)
+            .put(`/birds/${hummingbird._id}`)
+            .send(updatedHummer)
+            .then(({ body }) => {
+                assert.deepEqual(body, { n: 1, nModified: 1, ok: 1 });
+                return chai.request(app)
+                    .get('/birds');
+            })
+            .then(({ body }) => {
+                assert.deepEqual(body, [updatedHummer, crow]);
             });
     });
 
