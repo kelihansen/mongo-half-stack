@@ -43,5 +43,19 @@ describe('birds API', () => {
         assert.ok(hummingbird._id);        
     });
 
+    it('gets all birds (GET)', () => {
+        return chai.request(app)
+            .post('/birds')
+            .send(crow)
+            .then(({ body }) => {
+                crow = body;
+                return chai.request(app)
+                    .get('/birds');
+            })
+            .then(({ body }) => {
+                assert.deepEqual(body, [hummingbird, crow]);
+            });
+    });
+
     after(() => mongo.client.close());
 });
