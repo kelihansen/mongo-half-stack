@@ -96,5 +96,14 @@ describe('birds API', () => {
             });
     });
 
+
+    it('returns { removed: false } if id not found', () => {
+        return chai.request(app)
+            .del(`/birds/${crow._id}`)
+            .then(({ body }) => {
+                assert.ok(!body.removed);
+            });
+    });
+
     after(() => mongo.client.close());
 });
