@@ -22,15 +22,25 @@ describe('birds API', () => {
         colors: ['green', 'gray', 'red']
     };
 
-    it('saves a bird', () => {
+    let crow = {
+        commonName: 'American crow',
+        scientificName: 'Corvus brachyrhynchos',
+        wingspan: '85–100 cm',
+        diet: 'omnivorous',
+        colors: ['black']
+    };
+
+    before(() => {
         return chai.request(app)
             .post('/birds')
             .send(hummingbird)
             .then(({ body }) => {
-                assert.ok(body._id);
-                assert.equal(body.scientificName, hummingbird.scientificName);
                 hummingbird = body;
             });
+    });
+
+    it('saves a bird (POST)', () => {
+        assert.ok(hummingbird._id);        
     });
 
     after(() => mongo.client.close());
