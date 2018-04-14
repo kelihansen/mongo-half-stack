@@ -1,5 +1,6 @@
 const { createServer } = require('http');
 const app = require('./lib/app');
+require('.lib/mongodb');
 
 const server = createServer(app);
 
