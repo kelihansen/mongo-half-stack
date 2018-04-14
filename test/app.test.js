@@ -83,5 +83,18 @@ describe('birds API', () => {
             });
     });
 
+    it('removes a bird (DELETE)', () => {
+        return chai.request(app)
+            .del(`/birds/${crow._id}`)
+            .then(({ body }) => {
+                assert.ok(body.removed);
+                return chai.request(app)
+                    .get('/birds');
+            })
+            .then(({ body }) => {
+                assert.deepEqual(body, [updatedHummer]);
+            });
+    });
+
     after(() => mongo.client.close());
 });
